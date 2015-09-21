@@ -22,7 +22,7 @@ scanned.
 import logging
 from datetime import timedelta
 from collections import namedtuple
-import subprocess
+import os
 import re
 
 import homeassistant.util.dt as dt_util
@@ -39,7 +39,7 @@ _LOGGER = logging.getLogger(__name__)
 
 def get_scanner(hass, config):
     """ Validates config and returns a Arp scanner. """
-    if not validate_config(config, {DOMAIN: [CONF_HOSTS]},
+    if not validate_config(config, {DOMAIN: []},
                            _LOGGER):
         return None
 
@@ -56,7 +56,7 @@ class ArpScanner(object):
     def __init__(self, config):
         self.last_results = []
 
-        self.hosts = config[CONF_HOSTS]
+        self.hosts = config.get(CONF_HOSTS)
 
         self.success_init = self._update_info()
         _LOGGER.info("arp scanner initialized")
